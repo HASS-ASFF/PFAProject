@@ -1,5 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import  User
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 sexe = (
     ("H","Homme"),
@@ -17,6 +21,7 @@ class Client(models.Model):
     adresse = models.CharField(max_length=100,blank=True)
     code_postal = models.CharField(blank=True, max_length=10, null=True)
     num_tel = models.CharField(max_length=30,blank=True)
+    picture=models.ImageField(default='profile2.png',null=True,blank=True)
 
     def __str__(self):
         return self.nom
@@ -35,6 +40,7 @@ class Partenaire(models.Model):
     adresse = models.CharField(max_length=100)
     code_postal = models.CharField(blank=True, max_length=10, null=True)
     num_tel = models.CharField(max_length=30)
+    picture=models.ImageField(default='profile2.png',null=True,blank=True)
 
     def __str__(self):
         return self.nom

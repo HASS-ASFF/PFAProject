@@ -1,59 +1,69 @@
 from sys import platlibdir
 from unicodedata import category
+from django.shortcuts import render, redirect,get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import render
 from django.http import JsonResponse,HttpResponse
 from django.views import View
 from django.template.loader import render_to_string
 from .models import *
 import random
+from django.contrib import messages
+from RestoDApp.forms import *
 
 
-def search(request):
-    type=request.GET.get('categorie')
-    if not type:
-        plat = Plat.objects.all()
-    else:
-        plat = Plat.objects.filter(nom__icontains=type)
-    if not plat:
-        plat = Plat.objects.filter(id_ga__Name_gam__icontains=type)
-       
+def register(request):
 
-    nbr=plat.count()
-    p= Paginator(plat,6)
-    page = request.GET.get('page')
-       
-    try:
-        result = p.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        result = p.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        result = p.page(p.num_pages)
+    form=CreateUserForm()
 
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username=form.cleaned_data.get('username')
+            messages.success(request,'Account was created for'+username)
+            return redirect('login')
+    
     context={
-        'plat': result,
-        'type': type,
-        'nbr':nbr,
-        'paginate': True
+        'form':form,
     }
-    return render(request, '', context)
+    return render(request,'account/register.html',context)
+
+def Login(request):
+    if request.method == 'POST':
+        username= request.POST.get('username')
+        password= request.POST.get('password')
+        user=authenticate(request, username=username, password=password)
+        print(user)
+        if user is not None:
+            login(request, user)
+            return redirect('IndexView')
+            
+    return render(request,'account/login.html')
+
+def Logout(request):
+    logout(request)
+    return redirect('IndexView')
+
 
 class IndexView(View):
     def get(self,request):
-        plat=Plat.objects.all()[:3]
-        return render(request,'',{'plat':plat})
+        #plat=Plat.objects.all()[:3]
+        return render(request,'store/index.html',{})
 
 class AboutView(View):
     def get(self,request):
-        return render(request,'')
+        return render(request,'store/about.html')
+
+class ContactView(View):
+    def get(self,request):
+        return render(request,'store/ContactUs.html')
 
 class PlatView(View):
-    def get(self,request,type):
-        categorie="None"
+    def get(self,request,categorie):
         
-        if categorie=="All products":
+        if categorie=="All":
             plat=Plat.objects.all()
 
         elif categorie=="":
@@ -74,7 +84,7 @@ class PlatView(View):
             result = p.page(p.num_pages)
 
         if not plat:
-            return  render(request,'',{})
+            return  render(request,'store/menu.html',{})
         
         
         context={
@@ -83,13 +93,11 @@ class PlatView(View):
             'nbr':nbr,
             'paginate': True
         }
-        return render(request,'',context)
+        return render(request,'store/menu.html',context)
 
         
 
-class ContactView(View):
-    def get(self,request):
-        return render(request,'')
+
 
 
 class PlatDetailView(View):

@@ -1,0 +1,48 @@
+{% load static %}
+
+ <!-- header section strats -->
+ <header class="header_section">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg custom_nav-container ">
+        <a class="navbar-brand" href="{% url 'IndexView' %}">
+          <span>
+            Resto Delivery
+          </span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class=""> </span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav  mx-auto ">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'IndexView' %}">Acceuil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'PlatView' categorie='All' %}">Menu</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'AboutView' %}">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'ContactView' %}">ContactUs</a>
+            </li>
+          </ul>
+          <div class="user_option">
+            <a href="{% url 'login' %}" class="user_link">
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </a>
+            <a href="{% url 'cart' %}">
+              <i class="fa fa-shopping-cart" aria-hidden="true" style="color:white;"></i>
+            </a>
+                    <div  class="price cart-list" style="color:white;">{{request.session.cartdata|length}}</div>
+            <a href="" class="order_online">
+              Trouvez un Restaurant
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <!-- end header section -->

@@ -37,12 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
-    'RestoDapp',
-    'bootstrap_modal_forms',
+    'RestoDApp',
 ]
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 MIDDLEWARE = [
