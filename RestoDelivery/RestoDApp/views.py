@@ -49,8 +49,8 @@ def Logout(request):
 
 class IndexView(View):
     def get(self,request):
-        #plat=Plat.objects.all()[:3]
-        return render(request,'store/index.html',{})
+        resto=Restaurant.objects.all()[:3]
+        return render(request,'store/index.html',{'resto':resto})
 
 class AboutView(View):
     def get(self,request):
@@ -60,35 +60,73 @@ class ContactView(View):
     def get(self,request):
         return render(request,'store/ContactUs.html')
 
-class PlatView(View):
+class RestoView(View):
     def get(self,request,categorie):
         
         if categorie=="All":
-            plat=Plat.objects.all()
+            resto=Restaurant.objects.all()
 
         elif categorie=="":
-            plat=Plat.objects.filter(id_cat=Categorie.objects.get(nom=type))
+            resto=Restaurant.objects.filter(id_cat=Categorie.objects.get(nom=type))
         
         
-        nbr=plat.count()
-        p= Paginator(plat,6)
+        nbr=resto.count()
+        p= Paginator(resto,6)
         page = request.GET.get('page')
        
         try:
-            result = p.page(page)
+            resto = p.page(page)
         except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-            result = p.page(1)
+            resto = p.page(1)
         except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-            result = p.page(p.num_pages)
+            resto = p.page(p.num_pages)
 
-        if not plat:
-            return  render(request,'store/menu.html',{})
+        if not resto:
+            return  render(request,'store/resto.html',{})
         
         
         context={
-            'plat':result,
+            'resto':resto,
+            'categorie':categorie,
+            'nbr':nbr,
+            'paginate': True
+        }
+        return render(request,'store/resto.html',context)
+
+        
+
+
+class MenuView(View):
+    def get(self,request,categorie):
+        
+        if categorie=="All":
+            menu=MenuItem.objects.all()
+
+        else:
+            menu=MenuItem.objects.filter(id_cat=Categorie.objects.get(nom=categorie))
+        
+        
+        nbr=menu.count()
+        p= Paginator(menu,6)
+        page = request.GET.get('page')
+       
+        try:
+            menu = p.page(page)
+        except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+            menu = p.page(1)
+        except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+            menu = p.page(p.num_pages)
+
+        if not menu:
+            return  render(request,'store/index.html',{})
+        
+        
+        context={
+            'menu':menu,
             'categorie':categorie,
             'nbr':nbr,
             'paginate': True
@@ -98,19 +136,17 @@ class PlatView(View):
         
 
 
-
-
-class PlatDetailView(View):
-    def get(self,request,plat_id):
-        plat=Plat.objects.get(pk=plat_id)
-        categorie=Categorie.objects.get(Name_cat=plat.id_cat)
-        randomnumber=random.randint(1, Plat.objects.count()-4)
-        context={
-            'plat':plat,
-            'categorie':categorie,
-            'relatedprod':Plat.objects.all()[randomnumber:randomnumber+4]
-        }
-        return render(request,'',context)
+class MenuDetailView(View):
+    def get(self,request):
+        #plat=Plat.objects.get(pk=plat_id)
+        #categorie=Categorie.objects.get(Name_cat=plat.id_cat)
+        #randomnumber=random.randint(1, Plat.objects.count()-4)
+        #context={
+         #   'plat':plat,
+          #  'categorie':categorie,
+           # 'relatedprod':Plat.objects.all()[randomnumber:randomnumber+4]
+        #}
+        return render(request,'store/MenuView.html',{})
 
 class addTocart(View):
     def get(self,request):

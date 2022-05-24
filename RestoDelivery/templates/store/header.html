@@ -17,16 +17,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav  mx-auto ">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'IndexView' %}">Acceuil</a>
+              <a class="nav-link" href="{% url 'IndexView' %}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'PlatView' categorie='All' %}">Menu</a>
+              <a class="nav-link" href="{% url 'RestoView' categorie='All' %}">Restaurant</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'MenuView' categorie='All' %}">Menu</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'AboutView' %}">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'ContactView' %}">ContactUs</a>
+              <a class="nav-link" href="{% url 'ContactView' %}">Contact</a>
             </li>
           </ul>
           <div class="user_option">

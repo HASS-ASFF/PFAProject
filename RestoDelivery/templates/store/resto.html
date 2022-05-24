@@ -1,0 +1,46 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Resto Delivery | Menu{% endblock  %}
+
+{% block content %}
+{% load static %}
+<section class="food_section layout_padding-bottom">
+<div class="container">
+
+<div class="filters-content">
+  <div class="row grid">
+
+    {% for r in resto %}
+    <div class="col-sm-6 col-lg-4 all pizza">
+      <div class="box">
+        <div>
+          <div class="img-box">
+            {% if r.image %}
+            <img src="{{r.image.url}}" alt="">
+            {% endif %}
+          </div>
+          <div class="detail-box">
+            <h5>
+              {{r.nom}}
+            </h5>
+
+            <div class="btn-box">
+                <a href="" class="btn1">
+                  Découvrir
+                </a>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    {% endfor %}
+  </div>
+</div>
+</div>
+</section>
+
+  {% endblock  %}
+ 
