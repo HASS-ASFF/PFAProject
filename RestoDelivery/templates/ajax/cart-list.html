@@ -1,0 +1,79 @@
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table id="tableau" class="table">
+                        <thead>
+                            <tr>
+                                <th>Menu</th>
+                                <th>Quantite</th>
+                                <th>Prix</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product_id,item in items.items %}
+                                
+                            <tr>
+                                <td class="product__cart__item">
+                                    <div style="display:flex; align-items:space-between;" class="product__cart__item__pic">
+                                        <img style="width:30%;" src="{{item.image}}" alt="">
+                                        <h6 style="margin-top:14px;">{{item.title}}</h6>
+                                    </div>
+                                    
+                                </td>
+                                <td class="quantity__item">
+                                    <div style="display:flex; align-items:space-between;" class="quantity">
+                                        <div class="pro-qty-2">
+                                            <input type="text"  class="product-qty-{{product_id}}" value="{{item.qty}}">
+                                        </div>
+                                        <div style="margin-left:10px;" class="update-item" data-item="{{product_id}}"><i class="fa fa-refresh"></i></div>
+                                    </div>
+                                   
+                                </td>
+                                <td class="cart__price">{{ item.price }} DH</td>
+                                <td class="cart__price">{% widthratio item.price 1 item.qty %}DH</td>
+                                <td class="delete-item" data-item="{{product_id}}" ><i class="fa fa-close"></i></td>
+                            </tr>
+                                
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="#">Continue Order</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn update__btn">
+                            <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <form action="#">
+                        <input type="text" placeholder="Coupon code">
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Subtotal <span>{{totalitems}}</span></li>
+                        <li>Total <span>{{total_amt}}</span></li>
+                    </ul>
+                    <a href="#" class="primary-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->

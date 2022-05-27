@@ -11,6 +11,7 @@ from .models import *
 import random
 from django.contrib import messages
 from RestoDApp.forms import *
+from .decorators import *
 
 
 def register(request):
@@ -137,16 +138,17 @@ class MenuView(View):
 
 
 class MenuDetailView(View):
-    def get(self,request):
-        #plat=Plat.objects.get(pk=plat_id)
-        #categorie=Categorie.objects.get(Name_cat=plat.id_cat)
-        #randomnumber=random.randint(1, Plat.objects.count()-4)
-        #context={
-         #   'plat':plat,
-          #  'categorie':categorie,
-           # 'relatedprod':Plat.objects.all()[randomnumber:randomnumber+4]
-        #}
-        return render(request,'store/MenuView.html',{})
+    def get(self,request,menu_id):
+        menu=MenuItem.objects.get(pk=menu_id)
+        categorie=Categorie.objects.get(nom=menu.category)
+        randomnumber=random.randint(1, MenuItem.objects.count())
+
+        context={
+            'menu':menu,
+            'categorie':categorie,
+            'relatedprod':MenuItem.objects.all()[randomnumber:randomnumber+4]
+        }
+        return render(request,'store/shop-details.html',context)
 
 class addTocart(View):
     def get(self,request):
@@ -184,9 +186,9 @@ class ShoppingCartDetail(View):
                 'totalitems':len(request.session['cartdata']),
                 'total_amt':total_amt,
             }
-            return render(request, '',context)
+            return render(request, 'store/shopping-cart.html',context)
         except KeyError:
-            return render(request, '',{'total_amt':total_amt,'totalitems':0})
+            return render(request, 'store/shopping-cart.html',{'total_amt':total_amt,'totalitems':0})
 
 # Delete cart
 def delete_cart_item(request):
@@ -217,3 +219,7 @@ def update_cart_item(request):
 		total_amt+=int(item['qty'])*float(item['price'])
 	t=render_to_string('ajax/cart-list.html',{'cart_data':request.session['cartdata'],'totalitems':len(request.session['cartdata']),'total_amt':total_amt})
 	return JsonResponse({'data':t,'totalitems':len(request.session['cartdata'])})
+
+@unauthenticated_user
+def Checkout(request):
+    return render(request,"store/checkout.html",{})

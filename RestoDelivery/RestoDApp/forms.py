@@ -33,13 +33,14 @@ class CreateUserForm(UserCreationForm):
         }
 
 
-class PlatForm(forms.ModelForm):
+"""class PlatForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     class Meta:
         model = Plat
         fields = '__all__'
+"""
 
 
 class CategoriesForm(forms.ModelForm):

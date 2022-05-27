@@ -1,0 +1,122 @@
+{% extends 'store/base.html' %}
+
+{% block title %}RestoDelivery | Shopping Cart{% endblock  %}
+
+{% block content %}
+{% load static %}
+
+<!-- Css Styles -->
+<link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'store/css/font-awesome.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'store/css/elegant-icons.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'store/css/magnific-popup.css' %}" type="text/css">
+ <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/simple-line-icons/css/simple-line-icons.css' %} ">
+<link rel="stylesheet" href="{% static 'store/css/nice-select.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'store/css/owl.carousel.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'store/css/slicknav.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'store/css/style.css' %}" type="text/css">
+
+
+<!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text" >
+                        <h4 style="color:white;">Shopping Cart</h4>
+                        <div class="breadcrumb__links">
+                            <a href="{% url 'IndexView' %}" style="color:white;">Home</a>
+                            <a href="{% url 'MenuView' categorie='All' %}" style="color:white;">Menu</a>
+                            <span style="color:white;">Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad" id="cartList">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table id="tableau" class="table">
+                            <thead >
+                                <tr>
+                                    <th style="color:white;">Menu</th>
+                                    <th style="color:white;">Quantity</th>
+                                    <th style="color:white;">Price</th>
+                                    <th style="color:white;">Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product_id,item in items.items %}
+                                    
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div style="display:flex; align-items:space-between;" class="product__cart__item__pic">
+                                            <img style="width:30%;" src="{{item.image}}" alt="">
+                                            <h6 style="margin-top:14px;">{{item.title}}</h6>
+                                        </div>
+                                        
+                                    </td>
+                                    <td class="quantity__item">
+                                        <div style="display:flex; align-items:space-between;" class="quantity">
+                                            <div class="pro-qty-2">
+                                                <input type="text"  class="product-qty-{{product_id}}" value="{{item.qty}}">
+                                            </div>
+                                            <div style="margin-left:10px;" class="update-item" data-item="{{product_id}}"><i style="color:white;" class="fa fa-refresh"></i></div>
+                                        </div>
+                                       
+                                    </td>
+                                    <td style="color:white;" class="cart__price">{{ item.price }} DH</td>
+                                    <td style="color:white;" class="cart__price">{% widthratio item.price 1 item.qty %}DH</td>
+                                    <td  class="delete-item" data-item="{{product_id}}" ><i style="color:white;" class="fa fa-close"></i></td>
+                                </tr>
+                                    
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a style="color:white;" href="#">Continue Order</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a style="color:white;" href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__discount">
+                        <h6>Discount codes</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Coupon code">
+                            <button type="submit">Apply</button>
+                        </form>
+                    </div>
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span>{{totalitems}}</span></li>
+                            <li>Total <span>{{total_amt}}</span></li>
+                        </ul>
+                        {%if not request.user.is_staff %}
+                        <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+    
+
+{% endblock  %}

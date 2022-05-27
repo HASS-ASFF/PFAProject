@@ -45,6 +45,7 @@ class Partenaire(models.Model):
     code_postal = models.CharField(blank=True, max_length=10, null=True)
     num_tel = models.CharField(max_length=30)
     picture=models.ImageField(default='profile2.png',null=True,blank=True)
+    resto_id = models.ForeignKey("Restaurant",on_delete=models.CASCADE,related_name="restaurant_proprietaire",blank=True,null=True)
 
     def __str__(self):
         return self.nom
@@ -63,7 +64,7 @@ class Categorie(models.Model):
     class Meta:
         db_table = 'Categories_Plat'
 
-class Plat(models.Model):
+"""class Plat(models.Model):
     nom = models.CharField(max_length=30)
     img_plat=models.ImageField(upload_to="plats/",null=True,blank=True)
     description = models.CharField(max_length=100)
@@ -74,7 +75,8 @@ class Plat(models.Model):
         return self.nom
 
     class Meta:
-        db_table = 'Plat'
+        db_table = 'Plat' 
+"""
 
 
 class MenuItem(models.Model):
@@ -82,7 +84,7 @@ class MenuItem(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='menu_images/')
     prix = models.FloatField()
-    category = models.ManyToManyField('Categorie',related_name='item')
+    category = models.ForeignKey('Categorie',on_delete=models.CASCADE, blank= True,null=True)
 
 
     def __str__(self):
