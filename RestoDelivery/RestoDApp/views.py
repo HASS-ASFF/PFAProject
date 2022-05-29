@@ -47,10 +47,22 @@ def Logout(request):
     logout(request)
     return redirect('IndexView')
 
+def search(request):
+    type=request.GET.get('type')
+    if not type:
+        menu = MenuItem.objects.all()
+    else:
+        menu = MenuItem.objects.filter(category__nom=type)
+
+    context={
+        'menu': menu,
+        'type': type,
+    }
+    return render(request, 'store/menu.html', context)
 
 class IndexView(View):
     def get(self,request):
-        resto=Restaurant.objects.all()[:3]
+        resto=Restaurant.objects.all()
         return render(request,'store/index.html',{'resto':resto})
 
 class AboutView(View):

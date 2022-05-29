@@ -31,6 +31,31 @@
   .dropdown a:hover {background-color: #ddd;}
   
   .show {display: block;}
+
+    .search-form {
+      border-radius: 20px 0 0 20px;
+    }
+    
+    .input-group {
+      width:50%;
+    }
+    
+    input-group-btn {
+      max-width:38px;
+    }
+    
+    #search {
+      border: 1px;
+    }
+    
+    .search-btn {
+      cursor:pointer;
+      border-radius: 0 30px 30px 0; 
+      background-color:#fff;
+      color:#669;
+      
+    }
+    
   </style>
   
  <!-- header section strats -->
@@ -67,8 +92,8 @@
           <div class="dropdown">
               <i class="fa fa-user dropbtn" onclick="myFunction()"  aria-hidden="true">{{request.user}}</i>
             <div id="myDropdown" class="dropdown-content">
-              <a href="#home">Profile</a>
-              <a href="#about">Se déconnecter</a>
+              <a href="#">Profile</a>
+              <a href="{% url 'Logout' %}">Deconnexion</a>
             </div>
           </div>
             {% else %}
@@ -81,11 +106,19 @@
               <i class="fa fa-shopping-cart" aria-hidden="true" style="color:white;"></i>
             </a>
           <div  class="price cart-list" style="color:white;">{{request.session.cartdata|length}}</div>
-            <a href="{% url 'RestoView' categorie='All' %}" class="order_online" style="">
-              Trouvez un Restaurant
-            </a>
-          </div>
-            
+          
+          <div style="margin-left:10px;">
+          <form method="GET" action="{% url 'search' %}" accept-charset="x-UTF-16LE-BOM" class='form-inline'>
+            <div class="input-group">
+              <input type='text' name="type" class="form-control search-form" placeholder="">
+              <span class="input-group-btn" style="width:39px">
+                <button id="search-this" type="button" class="pull-right btn btn-default search-btn">
+                    <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </form>
+        
             
         </div>
       </nav>
@@ -94,13 +127,10 @@
 
 
   <script>
-    /* When the user clicks on the button, 
-    toggle between hiding and showing the dropdown content */
     function myFunction() {
       document.getElementById("myDropdown").classList.toggle("show");
     }
     
-    // Close the dropdown if the user clicks outside of it
     window.onclick = function(event) {
       if (!event.target.matches('.dropbtn')) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
